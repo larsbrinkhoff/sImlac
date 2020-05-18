@@ -172,6 +172,7 @@ namespace imlac.IO
         {
             ushort scanCode = 0;
             ImlacKey key = _system.Display.Key;
+            ImlacKey aikey = _system.Display.AiKey;
             ImlacKeyModifiers modifiers = _system.Display.KeyModifiers;
 
             Trace.Log(LogType.Keyboard, "Keypress is {0}", key);
@@ -189,6 +190,38 @@ namespace imlac.IO
                 // bit 8 is always set
                 scanCode = (ushort)(scanCode | 0x80);
                 
+                //
+                // The Repeat, Control, and Shift keys correspond to bits 5, 6, and 7 of the
+                // scancode returned.
+                //
+                if ((modifiers & ImlacKeyModifiers.Rept) != 0)
+                {
+                    scanCode |= 0x400;
+                }
+
+                if ((modifiers & ImlacKeyModifiers.Ctrl) != 0)
+                {
+                    scanCode |= 0x200;
+                }
+
+                if ((modifiers & ImlacKeyModifiers.Shift) != 0)
+                {
+                    scanCode |= 0x100;
+                }
+
+                Trace.Log(LogType.Keyboard, "Final keycode is {0}", Helpers.ToOctal(scanCode));
+            }
+
+            if (aikey != ImlacKey.Invalid)
+            {
+                scanCode = (modifiers & ImlacKeyModifiers.Shift) != 0 ? _keyMappings[key].ShiftedCode : _keyMappings[key].NormalCode;
+
+                if (scanCode == 0)
+                {
+                    // no code for shifted key, just use normal one.
+                    scanCode = _keyMappings[key].NormalCode;
+                }
+
                 //
                 // The Repeat, Control, and Shift keys correspond to bits 5, 6, and 7 of the
                 // scancode returned.

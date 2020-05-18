@@ -158,6 +158,14 @@ namespace imlac
         }
 
         /// <summary>
+        /// Indicates the currently pressed key (if IsKeyPressed is true)
+        /// </summary>
+        ImlacKey AiKey
+        {
+            get;
+        }
+
+        /// <summary>
         /// Indicates any modifier bits (ctrl, shift) being pressed.
         /// </summary>
         ImlacKeyModifiers KeyModifiers

@@ -119,6 +119,11 @@ namespace imlac
             _keyLatchedLock.ExitReadLock();
         }
 
+        public ImlacKey AiKey
+        {
+            get { return ImlacKey.Invalid; }
+        }        
+
         public ushort DataSwitches
         {
             get { return (ushort)_dataSwitches; }
@@ -768,6 +773,7 @@ namespace imlac
         private static void BuildKeyMappings()
         {
             _sdlImlacKeymap = new Dictionary<SDL_Keycode, ImlacKey>();
+            _sdlAiKeymap = new Dictionary<SDL_Keycode, ImlacKey>();
 
             _sdlImlacKeymap.Add(SDL_Keycode.SDLK_END, ImlacKey.DataXmit);
             _sdlImlacKeymap.Add(SDL_Keycode.SDLK_DOWN, ImlacKey.Down);
@@ -982,6 +988,7 @@ namespace imlac
         }
 
         private static Dictionary<SDL_Keycode, ImlacKey> _sdlImlacKeymap;
+        private static Dictionary<SDL_Keycode, ImlacKey> _sdlAiKeymap;
         private static Dictionary<SDL_Keycode, VKeys> _sdlVKeymap;
         private ImlacKey _currentKeyCode;
         private ImlacKeyModifiers _keyModifiers;
